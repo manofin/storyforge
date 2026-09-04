@@ -2,11 +2,14 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { CHARACTER_CATEGORIES, CHARACTERS, STORIES } from "@/data/fixtures";
+import {
+  CHARACTER_CATEGORIES,
+  CHARACTER_CHAT_SESSIONS,
+  CHARACTERS,
+} from "@/data/fixtures";
 import AvatarBadge from "./AvatarBadge";
-import { formatCount } from "@/lib/utils";
+import { formatCount, cn } from "@/lib/utils";
 import { Heart, MessageCircle } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 export default function CharacterDiscovery() {
   const [category, setCategory] = useState<string>("추천");
@@ -22,20 +25,42 @@ export default function CharacterDiscovery() {
     return CHARACTERS.filter((c) => c.category === category || c.tags.includes(category));
   }, [category]);
 
-  const startChat = (characterId: string) => {
-    const story = STORIES.find((s) => s.characterId === characterId);
-    if (story) router.push(`/?story=${story.id}`);
-    else router.push("/");
-  };
-
   return (
-    <div className="mx-auto flex h-full max-w-desktop gap-0">
-      <aside className="hidden w-64 shrink-0 border-r border-surface-border bg-white p-4 md:block">
-        <p className="mb-3 text-sm font-bold text-gray-800">대화 목록</p>
-        <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-surface-border bg-surface-muted px-4 py-10 text-center">
-          <div className="mb-3 text-3xl">💬</div>
-          <p className="text-sm font-semibold text-gray-700">아직 대화가 없어요</p>
-          <p className="mt-1 text-xs text-gray-500">캐릭터를 골라 스토리를 시작해 보세요</p>
+    <div className="mx-auto flex h-full max-w-[1440px] gap-0 border-x border-surface-border bg-white">
+      <aside className="hidden w-64 shrink-0 border-r border-surface-border bg-white md:flex md:flex-col">
+        <div className="flex items-center justify-between border-b border-surface-border px-4 py-3">
+          <p className="text-sm font-bold text-gray-800">채팅 내역</p>
+          <button type="button" className="text-xs text-gray-400 hover:text-gray-600">
+            편집
+          </button>
+        </div>
+        <div className="flex-1 overflow-y-auto p-2">
+          {CHARACTER_CHAT_SESSIONS.length === 0 ? (
+            <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-surface-border bg-surface-muted px-4 py-10 text-center">
+              <div className="mb-3 text-3xl">💬</div>
+              <p className="text-sm font-semibold text-gray-700">아직 대화가 없어요</p>
+              <p className="mt-1 text-xs text-gray-500">
+                캐릭터를 골라 대화를 시작해 보세요
+              </p>
+            </div>
+          ) : (
+            CHARACTER_CHAT_SESSIONS.map((c) => (
+              <button
+                key={c.id}
+                type="button"
+                onClick={() =>
+                  c.characterId && router.push(`/character/${c.characterId}/chat`)
+                }
+                className="mb-0.5 flex w-full items-center gap-3 rounded-xl px-2 py-2.5 text-left hover:bg-surface-muted"
+              >
+                <AvatarBadge emoji={c.emoji} color={c.color} size="sm" />
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-sm font-semibold">{c.title}</p>
+                  <p className="truncate text-xs text-gray-500">{c.preview}</p>
+                </div>
+              </button>
+            ))
+          )}
         </div>
       </aside>
 
@@ -63,7 +88,7 @@ export default function CharacterDiscovery() {
             <button
               key={c.id}
               type="button"
-              onClick={() => startChat(c.id)}
+              onClick={() => router.push(`/character/${c.id}`)}
               className="group flex flex-col rounded-2xl border border-surface-border bg-white p-4 text-left shadow-soft transition hover:-translate-y-0.5 hover:shadow-card"
             >
               <div className="mb-3 flex items-start gap-3">

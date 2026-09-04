@@ -101,7 +101,7 @@ export default function StorySidebar({
             <button
               key={c.id}
               type="button"
-              onClick={() => onSelectChat(c.id, c.storyId)}
+              onClick={() => c.storyId && onSelectChat(c.id, c.storyId)}
               className={cn(
                 "mb-0.5 flex w-full items-center gap-3 rounded-xl px-2 py-2.5 text-left transition",
                 activeChatId === c.id ? "bg-brand-50" : "hover:bg-surface-muted"

@@ -24,14 +24,13 @@ export default function StoryPageClient() {
   const [activeStoryId, setActiveStoryId] = useState(initial.storyId);
   const [showArchive, setShowArchive] = useState(false);
 
-  // sync when URL story changes
   useEffect(() => {
     setActiveStoryId(initial.storyId);
     setActiveChatId(initial.chatId);
   }, [initial.chatId, initial.storyId]);
 
   return (
-    <div className="mx-auto flex h-[calc(100vh-56px)] max-w-desktop overflow-hidden border-x border-surface-border bg-white">
+    <div className="mx-auto flex h-[calc(100vh-56px)] max-w-[1440px] overflow-hidden border-x border-surface-border bg-white">
       <StorySidebar
         activeChatId={activeChatId}
         showArchivePanel={showArchive}
@@ -42,7 +41,7 @@ export default function StoryPageClient() {
           setShowArchive(false);
         }}
       />
-      <ChatPanel storyId={activeStoryId} />
+      <ChatPanel mode="story" storyId={activeStoryId} />
     </div>
   );
 }

@@ -11,10 +11,46 @@ import type {
 } from "./types";
 
 export const MODELS: ModelOption[] = [
-  { id: "forge-2", name: "포지챗 2.0", badge: "추천" },
-  { id: "forge-lite", name: "포지챗 Lite" },
-  { id: "forge-pro", name: "포지챗 Pro" },
+  {
+    id: "forge-2",
+    name: "포지챗 2.0",
+    badge: "추천",
+    description: "균형 잡힌 서사와 자연스러운 선택지",
+    tier: "standard",
+    mode: "both",
+  },
+  {
+    id: "forge-lite",
+    name: "포지챗 Lite",
+    description: "가벼운 전개, 빠른 응답",
+    tier: "basic",
+    mode: "both",
+  },
+  {
+    id: "forge-pro",
+    name: "포지챗 Pro",
+    description: "더 긴 장면과 세밀한 감정선",
+    tier: "pro",
+    mode: "both",
+  },
+  {
+    id: "forge-basic-char",
+    name: "베이직",
+    description: "캐릭터와 가볍게 티키타카",
+    tier: "basic",
+    mode: "character",
+  },
+  {
+    id: "forge-pro-char",
+    name: "프로",
+    description: "더 똑똑하고 깊은 감정 대화",
+    tier: "pro",
+    mode: "character",
+  },
 ];
+
+export const STORY_MODELS = MODELS.filter((m) => m.mode === "both" || m.mode === "story");
+export const CHARACTER_MODELS = MODELS.filter((m) => m.mode === "character" || m.mode === "both");
 
 export const CHARACTER_CATEGORIES = [
   "추천", "신작", "랭킹", "판타지", "로맨스", "현대", "SF", "일상", "공포", "게임",
@@ -32,6 +68,10 @@ export const CHARACTERS: Character[] = [
     emoji: "📚",
     chatCount: 12480,
     likes: 3201,
+    creator: "@달빛공방",
+    quote: "이름은 부르지 마세요. 이곳에서는 이름이 곧 계약이 됩니다.",
+    commentCount: 42,
+    imageCount: 18,
   },
   {
     id: "char-reno",
@@ -44,6 +84,10 @@ export const CHARACTERS: Character[] = [
     emoji: "🕵️",
     chatCount: 8920,
     likes: 2104,
+    creator: "@네온골목",
+    quote: "단서가 하나 더 있어요. 따라오세요.",
+    commentCount: 28,
+    imageCount: 12,
   },
   {
     id: "char-mira",
@@ -56,6 +100,10 @@ export const CHARACTERS: Character[] = [
     emoji: "🚀",
     chatCount: 15602,
     likes: 4410,
+    creator: "@성간선",
+    quote: "공식 항로에서 완전히 이탈했네요. 이제부터가 진짜 여행이에요.",
+    commentCount: 61,
+    imageCount: 24,
   },
   {
     id: "char-haeun",
@@ -68,6 +116,10 @@ export const CHARACTERS: Character[] = [
     emoji: "☕",
     chatCount: 22110,
     likes: 5802,
+    creator: "@골목카페",
+    quote: "비 오는 날엔 달달한 게 제일이거든요.",
+    commentCount: 88,
+    imageCount: 31,
   },
   {
     id: "char-kael",
@@ -80,6 +132,10 @@ export const CHARACTERS: Character[] = [
     emoji: "⚔️",
     chatCount: 9801,
     likes: 2755,
+    creator: "@잿빛연대기",
+    quote: "말이 필요 없다면, 검으로 증명하세요.",
+    commentCount: 35,
+    imageCount: 15,
   },
   {
     id: "char-yuna",
@@ -92,6 +148,10 @@ export const CHARACTERS: Character[] = [
     emoji: "🌸",
     chatCount: 18440,
     likes: 6120,
+    creator: "@방과후",
+    quote: "…아직 안 가도 돼요.",
+    commentCount: 120,
+    imageCount: 22,
   },
   {
     id: "char-noir",
@@ -104,6 +164,10 @@ export const CHARACTERS: Character[] = [
     emoji: "🕯️",
     chatCount: 6402,
     likes: 1908,
+    creator: "@지하시장",
+    quote: "원하는 것의 값을… 치를 준비는 됐나요?",
+    commentCount: 19,
+    imageCount: 9,
   },
   {
     id: "char-pixel",
@@ -116,6 +180,10 @@ export const CHARACTERS: Character[] = [
     emoji: "🎮",
     chatCount: 11220,
     likes: 3330,
+    creator: "@버그픽스",
+    quote: "버그를 고칠래요, 아니면 이용할래요?",
+    commentCount: 54,
+    imageCount: 16,
   },
 ];
 
@@ -450,6 +518,113 @@ export const SAMPLE_IMAGES: GeneratedImage[] = [
     liked: false,
   },
 ];
+
+
+export const CHARACTER_CHAT_SESSIONS: ChatSession[] = [
+  {
+    id: "cchat-1",
+    title: "아리아 · 달빛 사서",
+    preview: "아리아 | 달빛이 서고 창에 길게 늘어졌어요…",
+    characterId: "char-aria",
+    emoji: "📚",
+    color: "#7C3AED",
+    updatedAt: "방금",
+  },
+  {
+    id: "cchat-2",
+    title: "하은 · 카페 매니저",
+    preview: "하은 | 오늘 라떼는 조금 달게 내려볼게요",
+    characterId: "char-haeun",
+    emoji: "☕",
+    color: "#EC4899",
+    updatedAt: "어제",
+  },
+];
+
+export const INITIAL_CHARACTER_MESSAGES: Record<string, ChatMessage[]> = {
+  "char-aria": [
+    {
+      id: "cm1",
+      role: "assistant",
+      kind: "dialogue",
+      content:
+        "아리아 | 달빛이 서고 창에 길게 늘어졌어요. 그녀는 책을 덮으며 살짝 고개를 기울였습니다.\n\n\"오늘은… 어떤 이야기를 찾으러 오셨나요?\"",
+    },
+  ],
+  "char-reno": [
+    {
+      id: "cm1",
+      role: "assistant",
+      kind: "dialogue",
+      content:
+        "레노 | 빗소리가 창을  Dual 때, 그는 코트 주머니에서 낡은 수첩을 꺼냈습니다.\n\n\"짧게 말해요. 의뢰인지, 아니면 그냥 비 피하러 온 건지.\"",
+    },
+  ],
+  "char-mira": [
+    {
+      id: "cm1",
+      role: "assistant",
+      kind: "dialogue",
+      content:
+        "미라 | 조종석 조명이 파랗게 깜빡였다. 미라가 헬멧을 벗으며 활짝 웃었다.\n\n\"좌표가 이상해요. 같이 볼래요?\"",
+    },
+  ],
+  "char-haeun": [
+    {
+      id: "cm1",
+      role: "assistant",
+      kind: "dialogue",
+      content:
+        "하은 | 유리창에 빗방울이 흘렀다. 하은이 라떼를 내려놓으며 살짝 웃었다.\n\n\"오늘은 시그니처예요. 잠깐 앉아 계실래요?\"",
+    },
+  ],
+  "char-kael": [
+    {
+      id: "cm1",
+      role: "assistant",
+      kind: "dialogue",
+      content:
+        "카엘 | 재가 바람에 흩날렸다. 카엘이 검 끝을 땅에 박고 당신을 바라보았다.\n\n\"말이 필요합니까, 검이 필요합니까.\"",
+    },
+  ],
+  "char-yuna": [
+    {
+      id: "cm1",
+      role: "assistant",
+      kind: "dialogue",
+      content:
+        "유나 | 종소리가 잦아들었다. 유나는 난간에 팔을 올리고 도시를 내려다보았다.\n\n\"...아직 안 가도 돼요.\"",
+    },
+  ],
+  "char-noir": [
+    {
+      id: "cm1",
+      role: "assistant",
+      kind: "dialogue",
+      content:
+        "느와르 | 지하 시장 끝, 마스크 너머로 웃음이 흘렀다.\n\n\"원하는 것의 값을… 치를 준비는 됐나요?\"",
+    },
+  ],
+  "char-pixel": [
+    {
+      id: "cm1",
+      role: "assistant",
+      kind: "dialogue",
+      content:
+        "픽셀 | UI가 깨지며 픽셀이 튀어나왔다. 그가 손가락을 튕겼다.\n\n\"버그를 고칠래요, 아니면 이용할래요?\"",
+    },
+  ],
+};
+
+export const DEFAULT_UTILITY_SETTINGS = {
+  playGuide: false,
+  summaryMemory: false,
+  conversationProfile: false,
+  situationImage: true,
+  characterInitiated: false,
+  outputLength: "medium" as const,
+  userNote: "",
+};
 
 export const HASH_TAGS = [
   "#판타지", "#로맨스", "#SF", "#일상", "#추리", "#힐링", "#모험", "#청춘",

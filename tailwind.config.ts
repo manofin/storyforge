@@ -35,7 +35,7 @@ const config: Config = {
         },
       },
       maxWidth: {
-        desktop: "1280px",
+        desktop: "1440px",
       },
       boxShadow: {
         soft: "0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04)",

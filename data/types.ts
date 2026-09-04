@@ -11,6 +11,10 @@ export type Character = {
   emoji: string;
   chatCount: number;
   likes: number;
+  creator?: string;
+  quote?: string;
+  commentCount?: number;
+  imageCount?: number;
 };
 
 export type Story = {
@@ -38,17 +42,29 @@ export type ChatSession = {
   id: string;
   title: string;
   preview: string;
-  storyId: string;
+  storyId?: string;
+  characterId?: string;
   emoji: string;
   color: string;
   updatedAt: string;
+};
+
+export type SceneState = {
+  time?: string;
+  scene?: string;
+  goal?: string;
+  characters?: string;
+  extra?: string;
 };
 
 export type ChatMessage = {
   id: string;
   role: "user" | "assistant" | "system";
   content: string;
-  kind?: "narrative" | "dialogue" | "context";
+  kind?: "narrative" | "dialogue" | "context" | "status";
+  state?: SceneState;
+  showSceneImage?: boolean;
+  streaming?: boolean;
 };
 
 export type WorkItem = {
@@ -82,4 +98,19 @@ export type ModelOption = {
   id: string;
   name: string;
   badge?: string;
+  description: string;
+  tier: "basic" | "standard" | "pro";
+  mode?: "story" | "character" | "both";
+};
+
+export type ConversationMode = "story" | "character";
+
+export type UtilitySettings = {
+  playGuide: boolean;
+  summaryMemory: boolean;
+  conversationProfile: boolean;
+  situationImage: boolean;
+  characterInitiated: boolean;
+  outputLength: "short" | "medium" | "long";
+  userNote: string;
 };
