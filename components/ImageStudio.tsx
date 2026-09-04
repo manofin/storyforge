@@ -42,8 +42,32 @@ export default function ImageStudio() {
   };
 
   return (
-    <div className="mx-auto flex h-[calc(100vh-56px)] max-w-desktop">
-      <aside className="w-56 shrink-0 border-r border-surface-border bg-white p-3">
+    <div className="mx-auto flex h-[calc(100vh-56px)] max-w-desktop flex-col md:flex-row">
+      <div className="flex gap-2 border-b border-surface-border bg-white px-3 py-2 md:hidden">
+        <button
+          type="button"
+          onClick={() => setSide("library")}
+          className={cn(
+            "inline-flex min-h-10 flex-1 items-center justify-center gap-1.5 rounded-xl text-sm font-semibold",
+            side === "library" ? "bg-brand-50 text-brand" : "bg-surface-muted text-gray-600"
+          )}
+        >
+          <Library className="h-4 w-4" />
+          라이브러리
+        </button>
+        <button
+          type="button"
+          onClick={() => setSide("liked")}
+          className={cn(
+            "inline-flex min-h-10 flex-1 items-center justify-center gap-1.5 rounded-xl text-sm font-semibold",
+            side === "liked" ? "bg-brand-50 text-brand" : "bg-surface-muted text-gray-600"
+          )}
+        >
+          <Heart className="h-4 w-4" />
+          좋아요
+        </button>
+      </div>
+      <aside className="hidden w-56 shrink-0 border-r border-surface-border bg-white p-3 md:block">
         <button
           type="button"
           onClick={() => setSide("library")}
@@ -82,7 +106,7 @@ export default function ImageStudio() {
         </div>
       </aside>
 
-      <div className="min-w-0 flex-1 overflow-y-auto p-6">
+      <div className="min-w-0 flex-1 overflow-y-auto p-4 sm:p-6">
         <div className="mb-4 flex gap-2">
           <button
             type="button"

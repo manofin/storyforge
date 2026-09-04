@@ -42,6 +42,7 @@ import ModelPicker from "./ModelPicker";
 import RecommendationChoices from "./RecommendationChoices";
 import UtilitiesPanel from "./UtilitiesPanel";
 import AvatarBadge from "./AvatarBadge";
+import { useMobileShell } from "./MobileShell";
 
 type Props = {
   mode?: ConversationMode;
@@ -89,6 +90,7 @@ export default function ChatPanel({
   const [genRecLoading, setGenRecLoading] = useState(false);
   const [panelOpen, setPanelOpen] = useState(true);
   const [settings, setSettings] = useState<UtilitySettings>({ ...DEFAULT_UTILITY_SETTINGS });
+  const { rightOpen, closeRight, toggleRight } = useMobileShell();
   const [menu, setMenu] = useState<MenuState>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
 
@@ -317,14 +319,14 @@ export default function ChatPanel({
   return (
     <div className="flex h-full min-w-0 flex-1">
       <div className="flex h-full min-w-0 flex-1 flex-col bg-surface-muted">
-        <div className="flex items-center justify-between border-b border-surface-border bg-white px-4 py-3 sm:px-5">
-          <button type="button" className="flex min-w-0 items-center gap-1 text-left">
+        <div className="flex items-center gap-2 border-b border-surface-border bg-white px-3 py-2.5 sm:px-5 sm:py-3">
+          <button type="button" className="flex min-w-0 flex-1 items-center gap-1 text-left">
             <h1 className="truncate text-sm font-bold text-gray-900 sm:text-base">
               {headerTitle}
             </h1>
             <ChevronRight className="h-4 w-4 shrink-0 text-gray-400" />
           </button>
-          <div className="flex items-center gap-2">
+          <div className="flex shrink-0 items-center gap-1 sm:gap-2">
             <ModelPicker
               models={models}
               value={selectedModel?.id ?? modelId}
@@ -338,7 +340,7 @@ export default function ChatPanel({
               type="button"
               onClick={() => setPanelOpen((v) => !v)}
               className={cn(
-                "rounded-lg p-1.5 hover:bg-surface-soft",
+                "hidden rounded-lg p-1.5 hover:bg-surface-soft md:inline-flex",
                 panelOpen ? "text-send" : "text-gray-500"
               )}
               title="도구 패널"
@@ -346,7 +348,24 @@ export default function ChatPanel({
             >
               <PanelRight className="h-5 w-5" />
             </button>
-            <button type="button" className="rounded-lg p-1.5 hover:bg-surface-soft">
+            <button
+              type="button"
+              onClick={toggleRight}
+              className={cn(
+                "inline-flex h-10 w-10 items-center justify-center rounded-lg hover:bg-surface-soft md:hidden",
+                rightOpen ? "text-send" : "text-gray-500"
+              )}
+              title="도구"
+              aria-label="도구 메뉴"
+              aria-expanded={rightOpen}
+            >
+              <MoreHorizontal className="h-5 w-5" />
+            </button>
+            <button
+              type="button"
+              className="hidden rounded-lg p-1.5 hover:bg-surface-soft md:inline-flex"
+              aria-label="더보기"
+            >
               <MoreHorizontal className="h-5 w-5 text-gray-500" />
             </button>
           </div>
@@ -406,7 +425,7 @@ export default function ChatPanel({
           </div>
         </div>
 
-        <div className="border-t border-surface-border bg-white px-4 py-3 sm:px-6">
+        <div className="sticky bottom-0 border-t border-surface-border bg-white px-3 py-3 sm:px-6">
           <div className="mx-auto max-w-2xl">
             {showTip && mode === "story" && (
               <div className="mb-2 flex items-center justify-between rounded-lg bg-gray-900 px-3 py-2 text-xs text-white">
@@ -517,6 +536,15 @@ export default function ChatPanel({
         settings={settings}
         onChange={setSettings}
         mode={mode}
+        variant="aside"
+      />
+      <UtilitiesPanel
+        open={rightOpen}
+        onClose={closeRight}
+        settings={settings}
+        onChange={setSettings}
+        mode={mode}
+        variant="drawer"
       />
 
       {menu && (

@@ -11,6 +11,8 @@ type Props = {
   settings: UtilitySettings;
   onChange: (next: UtilitySettings) => void;
   mode: "story" | "character";
+  /** Mobile: fixed right drawer. Desktop: persistent aside. */
+  variant?: "aside" | "drawer";
 };
 
 function ToggleRow({
@@ -67,19 +69,26 @@ function ToggleRow({
   );
 }
 
-export default function UtilitiesPanel({ open, onClose, settings, onChange, mode }: Props) {
-  if (!open) return null;
+export default function UtilitiesPanel({
+  open,
+  onClose,
+  settings,
+  onChange,
+  mode,
+  variant = "aside",
+}: Props) {
+  if (!open && variant === "aside") return null;
 
   const patch = (partial: Partial<UtilitySettings>) => onChange({ ...settings, ...partial });
 
-  return (
-    <aside className="flex h-full w-[300px] shrink-0 flex-col border-l border-surface-border bg-white">
+  const panel = (
+    <>
       <div className="flex items-center justify-between border-b border-surface-border px-4 py-3">
         <h2 className="text-sm font-bold text-gray-900">대화 도구</h2>
         <button
           type="button"
           onClick={onClose}
-          className="rounded-lg p-1.5 text-gray-400 hover:bg-surface-soft hover:text-gray-600"
+          className="flex h-10 w-10 items-center justify-center rounded-lg text-gray-400 hover:bg-surface-soft hover:text-gray-600"
           aria-label="패널 닫기"
         >
           <X className="h-4 w-4" />
@@ -206,6 +215,44 @@ export default function UtilitiesPanel({ open, onClose, settings, onChange, mode
       <div className="border-t border-surface-border px-4 py-2 text-[11px] text-gray-400">
         {mode === "story" ? "스토리 V40" : "캐릭터 V3"} · 스토리포지
       </div>
+    </>
+  );
+
+  if (variant === "drawer") {
+    return (
+      <div
+        className={cn(
+          "fixed inset-0 z-[60] md:hidden",
+          open ? "pointer-events-auto" : "pointer-events-none"
+        )}
+        aria-hidden={!open}
+      >
+        <button
+          type="button"
+          aria-label="닫기"
+          onClick={onClose}
+          className={cn(
+            "absolute inset-0 bg-black/40 transition-opacity duration-200",
+            open ? "opacity-100" : "opacity-0"
+          )}
+        />
+        <aside
+          role="dialog"
+          aria-modal="true"
+          className={cn(
+            "absolute inset-y-0 right-0 flex w-[min(320px,75vw)] max-w-full flex-col bg-white shadow-card transition-transform duration-200 ease-out",
+            open ? "translate-x-0" : "translate-x-full"
+          )}
+        >
+          {panel}
+        </aside>
+      </div>
+    );
+  }
+
+  return (
+    <aside className="hidden h-full w-[300px] shrink-0 flex-col border-l border-surface-border bg-white md:flex">
+      {panel}
     </aside>
   );
 }

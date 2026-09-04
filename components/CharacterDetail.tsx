@@ -51,7 +51,7 @@ export default function CharacterDetail({ characterId }: { characterId: string }
         </div>
       </aside>
 
-      <div className="min-w-0 flex-1 overflow-y-auto p-6">
+      <div className="min-w-0 flex-1 overflow-y-auto p-4 sm:p-6">
         <div className="mx-auto max-w-3xl">
           <div className="overflow-hidden rounded-2xl border border-surface-border bg-white shadow-soft">
             <div className="flex flex-col gap-5 p-5 sm:flex-row">

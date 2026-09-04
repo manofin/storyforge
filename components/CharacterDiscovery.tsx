@@ -64,15 +64,15 @@ export default function CharacterDiscovery() {
         </div>
       </aside>
 
-      <div className="min-w-0 flex-1 overflow-y-auto p-5">
-        <div className="mb-5 flex flex-wrap gap-2">
+      <div className="min-w-0 flex-1 overflow-y-auto p-4 sm:p-5">
+        <div className="mb-5 flex gap-2 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {CHARACTER_CATEGORIES.map((c) => (
             <button
               key={c}
               type="button"
               onClick={() => setCategory(c)}
               className={cn(
-                "rounded-full px-3.5 py-1.5 text-sm font-semibold transition",
+                "shrink-0 rounded-full px-3.5 py-1.5 text-sm font-semibold transition",
                 category === c
                   ? "bg-brand text-white"
                   : "bg-white text-gray-600 ring-1 ring-surface-border hover:bg-surface-soft"
